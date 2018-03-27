@@ -1,0 +1,31 @@
+--- Configurations/10-main.conf	2017-11-02 21:29:01.000000000 +0700
++++ Configurations/10-main.conf	2018-03-27 16:16:44.379133095 +0700
+@@ -910,7 +910,7 @@
+         # systems are perfectly capable of executing binaries targeting
+         # Froyo. Keep in mind that in the nutshell Android builds are
+         # about JNI, i.e. shared libraries, not applications.
+-        cflags           => add(picker(default => "-mandroid -fPIC --sysroot=\$(CROSS_SYSROOT) -Wa,--noexecstack")),
++        cflags           => add(picker(default => "-mandroid -fPIC --sysroot=\$(CROSS_SYSROOT) -Wa,--noexecstack \$(CROSS_ISYSROOT)")),
+         bin_cflags       => "-pie",
+     },
+     "android-x86" => {
+@@ -950,13 +950,18 @@
+ 
+     "android64" => {
+         inherit_from     => [ "linux-generic64" ],
+-        cflags           => add(picker(default => "-mandroid -fPIC --sysroot=\$(CROSS_SYSROOT) -Wa,--noexecstack")),
++        cflags           => add(picker(default => "-mandroid -fPIC --sysroot=\$(CROSS_SYSROOT) -Wa,--noexecstack \$(CROSS_ISYSROOT)")),
+         bin_cflags       => "-pie",
+     },
+     "android64-aarch64" => {
+         inherit_from     => [ "android64", asm("aarch64_asm") ],
+         perlasm_scheme   => "linux64",
+     },
++    "android64-x86" => {
++        inherit_from     => [ "android64", asm("x86_64_asm") ],
++        bn_ops           => "SIXTY_FOUR_BIT_LONG",
++        perlasm_scheme   => "linux64",
++    },
+ 
+ #### *BSD
+     "BSD-generic32" => {
